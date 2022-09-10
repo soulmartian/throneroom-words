@@ -10,9 +10,9 @@ function Keyboard({ onKeyPress, disabled }) {
       {LAYOUT.map((row, i) => (
         <div key={i}>
           {row.map((key, j) => (
-            <button disabled={disabled} key={j} onClick={() => onKeyPress(key)}>
+            <span disabled={disabled} key={j} onTouchStart={() => onKeyPress(key)}>
               {key}
-            </button>
+            </span>
           ))}
         </div>
       ))}
