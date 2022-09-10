@@ -36,12 +36,12 @@ function App() {
         setHintCount(0);
       }, 500);
     }
-  }, [inputKeys, setLevelIndex]);
+  }, [level.word, inputKeys, setLevelIndex]);
 
   const handleKeyPress = (key) => {
     setInputKeys(
       produce(inputKeys, (draftInputKeys) => {
-        if (key == "<") {
+        if (key === "<") {
           draftInputKeys.pop();
           return;
         }
