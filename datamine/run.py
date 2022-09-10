@@ -37,33 +37,30 @@ def run():
 
         definition = synset.definition()
         examples = synset.examples()
-        has_hint = False
-        item = {"word": word}
+        hints = []
 
         if word not in definition.lower():
             if len(definition) >= 8 and len(definition) <= 128:
-                item["definition"] = definition
-                has_hint = True
+                hints.append({"type": "definition", "value": definition})
 
-        if len(examples) > 0 and word in examples[0]:
+        if len(examples) > 0 and word in examples[0].lower():
             pattern = re.compile(word, re.IGNORECASE)
             example = pattern.sub("_" * len(word), examples[0])
             if len(example) >= 8 and len(example) <= 128:
-                item["example"] = example
-                has_hint = True
+                hints.append({"type": "example", "value": example})
 
-        if has_hint:
-            data.append(item)
+        if len(hints) > 0:
+            data.append({"word": word, "hints": hints})
 
     shuffled_data = []
     for chunk in divide_chunks(data, 64):
         random.shuffle(chunk)
         shuffled_data.extend(chunk)
 
-    print("%d words saved." % len(data))
-
     with open("../src/data/data.json", "w+", encoding="utf-8") as f:
         f.write(json.dumps(shuffled_data, indent=4, sort_keys=False))
+
+    print("%d words saved." % len(shuffled_data))
 
 if __name__ == "__main__":
     run()
