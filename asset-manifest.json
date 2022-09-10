@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/throneroom-words/static/css/main.58462fbc.css",
-    "main.js": "/throneroom-words/static/js/main.814aedbd.js",
+    "main.css": "/throneroom-words/static/css/main.d2117500.css",
+    "main.js": "/throneroom-words/static/js/main.fbe52c5a.js",
     "static/js/787.bf76dde8.chunk.js": "/throneroom-words/static/js/787.bf76dde8.chunk.js",
     "index.html": "/throneroom-words/index.html",
-    "main.58462fbc.css.map": "/throneroom-words/static/css/main.58462fbc.css.map",
-    "main.814aedbd.js.map": "/throneroom-words/static/js/main.814aedbd.js.map",
+    "main.d2117500.css.map": "/throneroom-words/static/css/main.d2117500.css.map",
+    "main.fbe52c5a.js.map": "/throneroom-words/static/js/main.fbe52c5a.js.map",
     "787.bf76dde8.chunk.js.map": "/throneroom-words/static/js/787.bf76dde8.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.58462fbc.css",
-    "static/js/main.814aedbd.js"
+    "static/css/main.d2117500.css",
+    "static/js/main.fbe52c5a.js"
   ]
 }
