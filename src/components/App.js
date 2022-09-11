@@ -1,12 +1,13 @@
 import { useState, useEffect, useMemo } from "react";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
-import data from "../data/data.json";
+import data from "../assets/data.json";
 import produce from "immer";
 import Keyboard from "./Keyboard";
 import Header from "./Header";
 import Input from "./Input";
 import Display from "./Display";
 import { useLocalStorage } from "../hooks";
+import { loadSounds, playSound, soundsEnabled, SOUND_WIN } from "../sounds";
 
 function App() {
   const [levelIndex, setLevelIndex] = useLocalStorage("level-index", 0);
@@ -21,6 +22,11 @@ function App() {
   }, [level.word, hintCount]);
 
   useEffect(() => {
+    soundsEnabled(true);
+    loadSounds();
+  }, []);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       setHintCount((hintCount) => hintCount + 1);
     }, 10000);
@@ -30,7 +36,10 @@ function App() {
 
   useEffect(() => {
     if (inputKeys.join("") === level.word) {
-      setCorrectGuess(true);
+      if (!correctGuess) {
+        playSound(SOUND_WIN);
+        setCorrectGuess(true);
+      }
       setTimeout(() => {
         setLevelIndex((levelIndex) => levelIndex + 1);
         setInputKeys([]);
@@ -38,7 +47,7 @@ function App() {
         setHintCount(0);
       }, 1000);
     }
-  }, [level.word, inputKeys, setLevelIndex]);
+  }, [level.word, inputKeys, setLevelIndex, correctGuess]);
 
   const handleKeyPress = (key) => {
     setInputKeys(

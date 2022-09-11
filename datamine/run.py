@@ -57,7 +57,7 @@ def run():
         random.shuffle(chunk)
         shuffled_data.extend(chunk)
 
-    with open("../src/data/data.json", "w+", encoding="utf-8") as f:
+    with open("../src/assets/data.json", "w+", encoding="utf-8") as f:
         f.write(json.dumps(shuffled_data, indent=4, sort_keys=False))
 
     print("%d words saved." % len(shuffled_data))

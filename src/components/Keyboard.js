@@ -1,3 +1,5 @@
+import { playSound, SOUND_KEY } from "../sounds";
+
 const LAYOUT = [
   ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
   [" ", "a", "s", "d", "f", "g", "h", "j", "k", "l"],
@@ -9,7 +11,7 @@ function Keyboard({ onKeyPress, disabled }) {
     if (disabled) {
       return;
     }
-
+    playSound(SOUND_KEY);
     onKeyPress(key);
   };
 
