@@ -20,14 +20,15 @@ function Keyboard({ onKeyPress, disabled }) {
           {row.map(
             (key, j) =>
               (key === " " && <span key={j} className="spacer"></span>) || (
-                <span
+                <div
                   className="key"
                   key={j}
-                  onMouseDown={() => handleKeyPress(key)}
-                  // onTouchDown={() => handleKeyPress(key)}
+                  onPointerDown={() => handleKeyPress(key)}
                 >
-                  {(key === "<" && "⌫") || key}
-                </span>
+                  <span className="key-inner">
+                    {(key === "<" && "⌫") || key}
+                  </span>
+                </div>
               )
           )}
         </div>
