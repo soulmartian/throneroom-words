@@ -1,23 +1,24 @@
 function Input({ maxLength, keys, hintedKeys, isCorrect }) {
   return (
     <div className={`Input${(isCorrect && " input-correct") || ""}`}>
-      {keys.map((key, i) => (
-        <span className="key key-full" key={i}>
-          {key}{" "}
-        </span>
-      ))}
-      {[...Array(maxLength - keys.length)].map((_, i) => {
-        const io = i + keys.length;
-        return (
-          <span
-            key={i}
-            className={`key key-${
-              (io < hintedKeys.length && "hint") || "empty"
-            }`}
-          >
-            {(io < hintedKeys.length && hintedKeys[io]) || ""}
-          </span>
-        );
+      {[...Array(maxLength)].map((_, i) => {
+        if (keys[i]) {
+          return (
+            <span className="key key-full" key={i}>
+              {keys[i]}
+            </span>
+          );
+        }
+
+        if (hintedKeys[i]) {
+          return (
+            <span className="key key-hint" key={i}>
+              {hintedKeys[i]}
+            </span>
+          );
+        }
+
+        return <span className="key key-empty" key={i}></span>
       })}
     </div>
   );

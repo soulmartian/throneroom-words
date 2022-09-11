@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import data from "../assets/data.json";
 import produce from "immer";
@@ -10,16 +10,12 @@ import { useLocalStorage } from "../hooks";
 import { loadSounds, playSound, soundsEnabled, SOUND_WIN } from "../sounds";
 
 function App() {
-  const [levelIndex, setLevelIndex] = useLocalStorage("level-index", 0);
+  const [levelIndex, setLevelIndex] = useLocalStorage("LEVEL_INDEX", 0);
   const [inputKeys, setInputKeys] = useState([]);
+  const [hintedKeys, setHintedKeys] = useState([]);
   const [correctGuess, setCorrectGuess] = useState(false);
-  const [hintCount, setHintCount] = useState(0);
 
   const level = data[levelIndex];
-
-  const hintedKeys = useMemo(() => {
-    return level.word.slice(0, hintCount);
-  }, [level.word, hintCount]);
 
   useEffect(() => {
     soundsEnabled(true);
@@ -27,12 +23,32 @@ function App() {
   }, []);
 
   useEffect(() => {
+    setHintedKeys(Array(level.word.length).fill(null));
+
     const interval = setInterval(() => {
-      setHintCount((hintCount) => hintCount + 1);
-    }, 10000);
+      if (!document.hasFocus()) {
+        return;
+      }
+      setHintedKeys((hintedKeys) => {
+        const indicies = hintedKeys
+          .map((value, i) => [value, i])
+          .filter(([value, _]) => !value)
+          .map(([_, i]) => i);
+        if (indicies.length <= level.word.length / 2) {
+          return hintedKeys;
+        }
+        if (!indicies.length) {
+          return hintedKeys;
+        }
+        const index = indicies[Math.floor(Math.random() * indicies.length)];
+        return produce(hintedKeys, (draftHintedKeys) => {
+          draftHintedKeys[index] = level.word[index];
+        });
+      });
+    }, 20000);
 
     return () => clearInterval(interval);
-  }, [level.word, setHintCount]);
+  }, [level.word]);
 
   useEffect(() => {
     if (inputKeys.join("") === level.word) {
@@ -44,7 +60,6 @@ function App() {
         setLevelIndex((levelIndex) => levelIndex + 1);
         setInputKeys([]);
         setCorrectGuess(false);
-        setHintCount(0);
       }, 1000);
     }
   }, [level.word, inputKeys, setLevelIndex, correctGuess]);

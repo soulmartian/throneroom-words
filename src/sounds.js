@@ -35,7 +35,6 @@ export function loadSound(soundKey, options = {}) {
 }
 
 export async function playSound(soundKey) {
-    console.log("play sound", soundKey);
   if (disabled) {
     return;
   }
