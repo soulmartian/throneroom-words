@@ -1,10 +1,11 @@
 import { useState, useEffect, useMemo } from "react";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 import data from "../data/data.json";
 import produce from "immer";
 import Keyboard from "./Keyboard";
 import Header from "./Header";
 import Input from "./Input";
-import HintsDisplay from "./HintsDisplay";
+import Display from "./Display";
 
 function App() {
   const [levelIndex, setLevelIndex] = useState(0);
@@ -22,7 +23,7 @@ function App() {
     const interval = setInterval(() => {
       setHintCount(hintCount => hintCount + 1);
     }, 10000);
-  
+
     return () => clearInterval(interval);
   }, [level.word, setHintCount]);
 
@@ -56,8 +57,24 @@ function App() {
   return (
     <div className="App">
       <Header levelNumber={levelIndex + 1} />
-      <HintsDisplay hints={level.hints} />
-      <Input maxLength={level.word.length} keys={inputKeys} hintedKeys={hintedKeys} />
+      <TransitionGroup className="display-container">
+        <CSSTransition
+          key={levelIndex}
+          addEndListener={(node, done) => {
+            node.addEventListener("transitionend", done, false);
+          }}
+          classNames="move"
+        >
+          <Display hints={level.hints}>
+            <Input
+              maxLength={level.word.length}
+              keys={inputKeys}
+              hintedKeys={hintedKeys}
+            />
+          </Display>
+        </CSSTransition>
+      </TransitionGroup>
+
       <Keyboard disabled={inputDisabled} onKeyPress={handleKeyPress} />
     </div>
   );

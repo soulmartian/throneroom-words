@@ -8,9 +8,9 @@ function Keyboard({ onKeyPress, disabled }) {
   return (
     <div className="Keyboard">
       {LAYOUT.map((row, i) => (
-        <div key={i}>
+        <div className="row" key={i}>
           {row.map((key, j) => (
-            <span disabled={disabled} key={j} onTouchStart={() => onKeyPress(key)}>
+            <span className="key" key={j} onTouchStart={() => !disabled && onKeyPress(key)}>
               {key}
             </span>
           ))}
