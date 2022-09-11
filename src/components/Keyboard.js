@@ -26,7 +26,7 @@ function Keyboard({ onKeyPress, disabled }) {
                   onMouseDown={() => handleKeyPress(key)}
                   // onTouchDown={() => handleKeyPress(key)}
                 >
-                  {key == "<" && "⌫" || key}
+                  {(key === "<" && "⌫") || key}
                 </span>
               )
           )}
