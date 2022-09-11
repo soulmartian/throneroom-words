@@ -6,11 +6,12 @@ import Keyboard from "./Keyboard";
 import Header from "./Header";
 import Input from "./Input";
 import Display from "./Display";
+import { useLocalStorage } from "../hooks";
 
 function App() {
-  const [levelIndex, setLevelIndex] = useState(0);
+  const [levelIndex, setLevelIndex] = useLocalStorage("level-index", 0);
   const [inputKeys, setInputKeys] = useState([]);
-  const [inputDisabled, setInputDisabled] = useState(false);
+  const [correctGuess, setCorrectGuess] = useState(false);
   const [hintCount, setHintCount] = useState(0);
 
   const level = data[levelIndex];
@@ -21,7 +22,7 @@ function App() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setHintCount(hintCount => hintCount + 1);
+      setHintCount((hintCount) => hintCount + 1);
     }, 10000);
 
     return () => clearInterval(interval);
@@ -29,13 +30,13 @@ function App() {
 
   useEffect(() => {
     if (inputKeys.join("") === level.word) {
-      setInputDisabled(true);
+      setCorrectGuess(true);
       setTimeout(() => {
-        setLevelIndex(levelIndex => levelIndex + 1);
+        setLevelIndex((levelIndex) => levelIndex + 1);
         setInputKeys([]);
-        setInputDisabled(false);
+        setCorrectGuess(false);
         setHintCount(0);
-      }, 500);
+      }, 1000);
     }
   }, [level.word, inputKeys, setLevelIndex]);
 
@@ -70,12 +71,13 @@ function App() {
               maxLength={level.word.length}
               keys={inputKeys}
               hintedKeys={hintedKeys}
+              isCorrect={correctGuess}
             />
           </Display>
         </CSSTransition>
       </TransitionGroup>
 
-      <Keyboard disabled={inputDisabled} onKeyPress={handleKeyPress} />
+      <Keyboard disabled={correctGuess} onKeyPress={handleKeyPress} />
     </div>
   );
 }
