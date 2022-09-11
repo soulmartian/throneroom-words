@@ -15,8 +15,6 @@ html {
   box-sizing: inherit;
 }
 
-$baseWidth: calc(10 / 16 * 100vh);
-
 html {
   height: 100%;
   font-family: 'Montserrat', sans-serif;
@@ -120,9 +118,9 @@ html {
       
       @media (min-aspect-ratio: #{$aspectRatio}) {
         .App {
-          width: calc((100vh * var(--aspect-ratio)));
-          height: calc(100vh);
-          font-size: calc((5vh * var(--aspect-ratio)));
+          width: calc(var(--vh, 1vh) * 100 * var(--aspect-ratio));
+          height: calc(var(--vh, 1vh) * 100);
+          font-size: calc(var(--vh, 1vh) * 5 * var(--aspect-ratio));
         }
       }
     }
