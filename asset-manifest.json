@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/throneroom-words/static/css/main.f1dc6322.css",
-    "main.js": "/throneroom-words/static/js/main.d1e86632.js",
+    "main.css": "/throneroom-words/static/css/main.2eb7ef5b.css",
+    "main.js": "/throneroom-words/static/js/main.59a944e1.js",
     "static/js/787.bf76dde8.chunk.js": "/throneroom-words/static/js/787.bf76dde8.chunk.js",
     "static/media/win.mp3": "/throneroom-words/static/media/win.a194cd079a32d8ca571b.mp3",
     "static/media/win.webm": "/throneroom-words/static/media/win.33b8ff969742eda75086.webm",
     "index.html": "/throneroom-words/index.html",
     "static/media/key.webm": "/throneroom-words/static/media/key.c32e44a8cac72a52b3e5.webm",
     "static/media/key.mp3": "/throneroom-words/static/media/key.a75dc02404290f74c999.mp3",
-    "main.f1dc6322.css.map": "/throneroom-words/static/css/main.f1dc6322.css.map",
-    "main.d1e86632.js.map": "/throneroom-words/static/js/main.d1e86632.js.map",
+    "main.2eb7ef5b.css.map": "/throneroom-words/static/css/main.2eb7ef5b.css.map",
+    "main.59a944e1.js.map": "/throneroom-words/static/js/main.59a944e1.js.map",
     "787.bf76dde8.chunk.js.map": "/throneroom-words/static/js/787.bf76dde8.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f1dc6322.css",
-    "static/js/main.d1e86632.js"
+    "static/css/main.2eb7ef5b.css",
+    "static/js/main.59a944e1.js"
   ]
 }
