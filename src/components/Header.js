@@ -1,8 +1,19 @@
 import { useEffect } from "react";
 import { useLocalStorage } from "../hooks";
+import { playSound, SOUND_KEY } from "../sounds";
 
-function Header({ levelNumber }) {
-  const [darkMode, setDarkMode] = useLocalStorage("DARK_MODE", false);
+function Header({ levelNumber, hintCount, onUseHint }) {
+  const [darkMode, setDarkMode] = useLocalStorage("darkMode", false);
+
+  const handleUseHintClick = () => {
+    playSound(SOUND_KEY);
+    onUseHint();
+  };
+
+  const handleDarkModeClick = () => {
+    playSound(SOUND_KEY);
+    setDarkMode(!darkMode);
+  };
 
   useEffect(() => {
     if (darkMode) {
@@ -15,8 +26,21 @@ function Header({ levelNumber }) {
   return (
     <div className="Header">
       <span>#{("" + levelNumber).padStart(4, "0")}</span>
-      <button onClick={() => setDarkMode(!darkMode)}>
-        <span>{(darkMode && "light") || "dark"}<br />mode</span>
+      <div className="spacer"></div>
+      <button onClick={handleUseHintClick}>
+        <span>
+          use hint
+          <br />
+          <strong>{("" + hintCount).padStart(4, "0")}</strong>
+        </span>
+        💡
+      </button>
+      <button onClick={handleDarkModeClick}>
+        <span>
+          {(darkMode && "light") || "dark"}
+          <br />
+          mode
+        </span>
         {(darkMode && "☀️") || "🌙"}
       </button>
     </div>

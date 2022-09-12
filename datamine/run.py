@@ -23,7 +23,6 @@ def run():
     profanities_list = requests.get(profanity_url).text.splitlines()
     profanities_list = [item.strip().lower() for item in profanities_list]
 
-
     names_url = "https://raw.githubusercontent.com/dominictarr/random-name/master/names.txt"
     names_list = requests.get(names_url).text.splitlines()
     names_list = [item.strip().lower() for item in names_list]

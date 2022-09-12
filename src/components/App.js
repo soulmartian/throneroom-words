@@ -10,45 +10,43 @@ import { useLocalStorage } from "../hooks";
 import { loadSounds, playSound, soundsEnabled, SOUND_WIN } from "../sounds";
 
 function App() {
-  const [levelIndex, setLevelIndex] = useLocalStorage("LEVEL_INDEX", 0);
-  const [inputKeys, setInputKeys] = useState([]);
-  const [hintedKeys, setHintedKeys] = useState([]);
+  const [levelIndex, setLevelIndex] = useLocalStorage("levelIndex", 0);
+  const [hintCount, setHintCount] = useLocalStorage("hintCount", 16);
+  const [inputKeys, setInputKeys] = useLocalStorage("inputKeys", []);
+  const [hintedKeys, setHintedKeys] = useLocalStorage("hintedKeys", []);
   const [correctGuess, setCorrectGuess] = useState(false);
 
   const level = data[levelIndex];
+
+  const handleUseHint = () => {
+    if (hintCount <= 0) {
+      return;
+    }
+
+    const indicies = level.word
+      .split("")
+      .map((_, i) => i)
+      .filter((i) => !hintedKeys[i]);
+
+    if (!indicies.length) {
+      return;
+    }
+
+    const index = indicies[Math.floor(Math.random() * indicies.length)];
+
+    setHintedKeys(
+      produce(hintedKeys, (draftHintedKeys) => {
+        draftHintedKeys[index] = level.word[index];
+      })
+    );
+
+    setHintCount(hintCount - 1);
+  };
 
   useEffect(() => {
     soundsEnabled(true);
     loadSounds();
   }, []);
-
-  useEffect(() => {
-    setHintedKeys(Array(level.word.length).fill(null));
-
-    const interval = setInterval(() => {
-      if (!document.hasFocus()) {
-        return;
-      }
-      setHintedKeys((hintedKeys) => {
-        const indicies = hintedKeys
-          .map((value, i) => [value, i])
-          .filter(([value, _]) => !value)
-          .map(([_, i]) => i);
-        if (indicies.length <= level.word.length / 2) {
-          return hintedKeys;
-        }
-        if (!indicies.length) {
-          return hintedKeys;
-        }
-        const index = indicies[Math.floor(Math.random() * indicies.length)];
-        return produce(hintedKeys, (draftHintedKeys) => {
-          draftHintedKeys[index] = level.word[index];
-        });
-      });
-    }, 20000);
-
-    return () => clearInterval(interval);
-  }, [level.word]);
 
   useEffect(() => {
     if (inputKeys.join("") === level.word) {
@@ -59,10 +57,20 @@ function App() {
       setTimeout(() => {
         setLevelIndex((levelIndex) => levelIndex + 1);
         setInputKeys([]);
+        setHintedKeys([]);
         setCorrectGuess(false);
+        setHintCount((hintCount) => hintCount + 1);
       }, 1000);
     }
-  }, [level.word, inputKeys, setLevelIndex, correctGuess]);
+  }, [
+    level.word,
+    inputKeys,
+    setLevelIndex,
+    correctGuess,
+    setHintCount,
+    setHintedKeys,
+    setInputKeys,
+  ]);
 
   const handleKeyPress = (key) => {
     setInputKeys(
@@ -81,7 +89,11 @@ function App() {
 
   return (
     <div className="App">
-      <Header levelNumber={levelIndex + 1} />
+      <Header
+        levelNumber={levelIndex + 1}
+        hintCount={hintCount}
+        onUseHint={handleUseHint}
+      />
       <TransitionGroup className="display-container">
         <CSSTransition
           key={levelIndex}
